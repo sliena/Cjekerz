@@ -1,27 +1,26 @@
 //import Main.board
 
+import javafx.scene.Node
 import scalafx.application
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
+import scalafx.scene.effect.GaussianBlur
 import scalafx.scene.paint.Color._
 import scalafx.scene.shape.Rectangle
-
 import scalafx.scene.layout.BorderPane
+import scalafx.Includes._
 
 object Main extends JFXApp {
   implicit def superBoard(board: Array[Array[Int]]): ArrayAsBoard = new ArrayAsBoard(board)
 
   val root: BorderPane = new BorderPane()
-  val board: Array[Array[Int]] = board.newBoard()
-
+  val board: Array[Array[Int]] = board.newEmptyBoard
 
   addBoardAsChildrenToRoot(board)
 
   stage = new application.JFXApp.PrimaryStage {
     title = "cjekerz"
-    width = 800
-    height = 800
-    scene = new Scene(root, 400, 400)
+    scene = new Scene(root, 800, 800)
   }
 
   board.state()
@@ -35,41 +34,26 @@ object Main extends JFXApp {
       for (j <- board.indices) {
         board(i)(j) match {
           case 0 =>
-            root.children.add(
-              new Rectangle {
+            val rect = new Rectangle {
                 fill = Black
                 x = zeroX
                 y = zeroY
                 width = 100
                 height = 100
-              })
+              }
+            root.children.add(rect)
           case 1 =>
-            root.children.add(
-              new Rectangle {
+            val rect = new Rectangle {
                 fill = White
                 x = zeroX
                 y = zeroY
                 width = 100
                 height = 100
-              })
-          case 2 =>
-            root.children.add(
-              new Rectangle {
-                fill = Blue
-                x = zeroX
-                y = zeroY
-                width = 100
-                height = 100
-              })
-          case 3 =>
-            root.children.add(
-              new Rectangle {
-                fill = Green
-                x = zeroX
-                y = zeroY
-                width = 100
-                height = 100
-              })
+              }
+            rect.onMouseClicked = e => {
+              rect.setStyle("-fx-fill: red; ")
+            }
+            root.children.add(rect)
         }
         zeroX += 100
       }
